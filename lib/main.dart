@@ -95,7 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.directions_bus, color: Colors.white),
+          icon: Icon(Icons.directions_bus_filled, color: Colors.white),
           onPressed: () => {},
         ),
         // Here we take the value from the MyHomePage object that was created by
