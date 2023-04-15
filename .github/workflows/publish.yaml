@@ -1,0 +1,27 @@
+name: Publish to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: dev
+      - run: flutter pub get
+      - run: flutter test
+      - run: flutter build web
+      - uses: cpina/github-action-push-to-another-repository@main
+        env:
+          SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
+        with:
+          source-directory: 'build/web'
+          destination-github-username: 'shivanandvp-official'
+          destination-repository-name: 'shivanandvp-official.github.io'
+          user-email: shivanandvp.oss@gmail.com
+          target-branch: main
