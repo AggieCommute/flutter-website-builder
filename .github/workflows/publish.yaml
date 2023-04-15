@@ -23,6 +23,7 @@ jobs:
         with:
           source-directory: 'build/web'
           destination-github-username: 'shivanandvp-official'
+          destination-repository-username: 'AggieCommute'
           destination-repository-name: 'aggiecommute.github.io'
           user-email: shivanandvp.oss@gmail.com
           target-branch: main
