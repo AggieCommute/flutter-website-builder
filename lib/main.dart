@@ -186,6 +186,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         Flexible(
                             flex: 3,
                             child: TextFormField(
+                              onChanged: setCommuteSource,
                               cursorColor: Colors.white,
                               decoration: InputDecoration(
                                 icon: const Icon(Icons.my_location,
@@ -209,6 +210,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         Flexible(
                             flex: 3,
                             child: TextFormField(
+                              onChanged: setCommuteDestination,
                               cursorColor: Colors.white,
                               decoration: InputDecoration(
                                 icon: const Icon(Icons.map_outlined,
