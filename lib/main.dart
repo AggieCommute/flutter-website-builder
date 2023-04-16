@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 
 void main() {
   runApp(const AggieCommuteApp());
@@ -25,7 +27,8 @@ class AggieCommuteApp extends StatelessWidget {
         b + ((ds < 0 ? b : (255 - b)) * ds).round(),
         1,
       );
-    };
+    }
+    ;
     return MaterialColor(color.value, swatch);
   }
 
@@ -35,17 +38,15 @@ class AggieCommuteApp extends StatelessWidget {
     return MaterialApp(
       title: 'Aggie Commute',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: createMaterialColor(Color(0xff500000)),
-      ),
+          brightness: Brightness.dark,
+          primarySwatch: createMaterialColor(const Color(0xff500000)),
+          primaryColor: const Color(0xff500000),
+          fontFamily: GoogleFonts.oswald().fontFamily),
+      darkTheme: ThemeData(
+          brightness: Brightness.dark,
+          primarySwatch: createMaterialColor(const Color(0xff500000)),
+          primaryColor: const Color(0xff500000),
+          fontFamily: GoogleFonts.oswald().fontFamily),
       home: const MyHomePage(title: '=Aggie Commute'),
       debugShowCheckedModeBanner: false,
     );
@@ -71,16 +72,33 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  String commuteSource = "";
+  String commuteDestination = "";
+  TimeOfDay commuteTime = TimeOfDay.now();
+  DateTime commuteDate = DateTime.now();
   int _counter = 0;
 
-  void _incrementCounter() {
+  void setCommuteSource(String userSource) {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      commuteSource = userSource;
+    });
+  }
+
+  void setCommuteDestination(String userDestination) {
+    setState(() {
+      commuteDestination = userDestination;
+    });
+  }
+
+  void setCommuteTime(TimeOfDay userTime) {
+    setState(() {
+      commuteTime = userTime;
+    });
+  }
+
+  void setCommuteDate(DateTime userDate) {
+    setState(() {
+      commuteDate = userDate;
     });
   }
 
@@ -94,55 +112,111 @@ class _MyHomePageState extends State<MyHomePage> {
     // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.directions_bus_filled, color: Colors.white, size: 35),          
-          onPressed: () => {},
-        ),
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title, style: GoogleFonts.oswald(
-            textStyle: TextStyle(color: Colors.white),
-            fontSize: 30,
-            fontWeight: FontWeight.w700,
-            fontStyle: FontStyle.italic,
-          )
-        ),
-      ),
+          toolbarHeight: 120.10, //set your height
+          flexibleSpace: SafeArea(
+              child: Container(
+            color: Theme.of(context).primaryColor, // set your color
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(widget.title,
+                            style: GoogleFonts.oswald(
+                              textStyle: const TextStyle(color: Colors.white),
+                              fontSize: 30,
+                              fontWeight: FontWeight.w700,
+                              fontStyle: FontStyle.italic,
+                            )),
+                        IconButton(
+                          icon: const Icon(Icons.directions_bus_filled,
+                              color: Colors.white, size: 35),
+                          onPressed: () => {},
+                        ),
+                      ]),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Flexible(
+                            flex: 2,
+                            child: TextFormField(
+                              decoration: const InputDecoration(
+                                icon: Icon(Icons.my_location,
+                                    color: Colors.white),
+                                hintText: 'Where do you want to start from?',
+                                labelText: 'Source',
+                              ),
+                              onSaved: (String? value) {
+                                // This optional block of code can be used to run
+                                // code when the user saves the form.
+                              },
+                              validator: (String? value) {
+                                return (value != null)
+                                    ? 'Do not use the @ char.'
+                                    : null;
+                              },
+                            )),
+                        Flexible(
+                            flex: 2,
+                            child: TextFormField(
+                              decoration: const InputDecoration(
+                                icon: Icon(Icons.map_outlined,
+                                    color: Colors.white),
+                                hintText: 'Where do you want to go?',
+                                labelText: 'Destination',
+                              ),
+                              onSaved: (String? value) {
+                                // This optional block of code can be used to run
+                                // code when the user saves the form.
+                              },
+                              validator: (String? value) {
+                                return (value != null)
+                                    ? 'Do not use the @ char.'
+                                    : null;
+                              },
+                            )),
+                        Flexible(
+                          flex: 1,
+                          child: OutlinedButton(
+                            onPressed: () {
+                              debugPrint('Received click');
+                            },
+                            child: const Text('Click Me'),
+                          ),
+                        ),
+                      ])
+                ]),
+          ))),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+          // Center is a layout widget. It takes a single child and positions it
+          // in the middle of the parent.
+          child: Stack(children: [
+        Padding(
+          padding: const EdgeInsets.all(8),
+          child: FlutterMap(
+            options: MapOptions(
+              center: LatLng(30.61221, -96.34149),
+              zoom: 15,
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+            nonRotatedChildren: [
+              AttributionWidget.defaultWidget(
+                source: 'OpenStreetMap contributors',
+                onSourceTapped: null,
+              ),
+            ],
+            children: [
+              TileLayer(
+                urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                userAgentPackageName: 'com.example.app',
+              ),
+            ],
+          ),
+        )
+      ])),
     );
   }
 }
