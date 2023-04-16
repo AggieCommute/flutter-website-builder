@@ -204,12 +204,12 @@ class _MyHomePageState extends State<MyHomePage> {
                       children: [
                         IconButton(
                           icon: const Icon(Icons.menu,
-                              color: Colors.white, size: 35),
+                              color: Colors.white, size: 30),
                           onPressed: () => {},
                         ),
                         IconButton(
                           icon: const Icon(Icons.bug_report_sharp,
-                              color: Colors.white, size: 35),
+                              color: Colors.white, size: 30),
                           onPressed: displayRouteRequest,
                         ),
                         const Spacer(),
@@ -228,7 +228,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     )),
                                 const IconButton(
                                   icon: Icon(Icons.directions_bus_filled,
-                                      color: Colors.white, size: 35),
+                                      color: Colors.white, size: 30),
                                   onPressed: null,
                                 ),
                               ])
@@ -236,14 +236,14 @@ class _MyHomePageState extends State<MyHomePage> {
                         const Spacer(),
                         IconButton(
                           icon: const Icon(Icons.calendar_month_outlined,
-                              color: Colors.white, size: 35),
+                              color: Colors.white, size: 30),
                           onPressed: () async {
                             setCommuteDate();
                           },
                         ),
                         IconButton(
                           icon: const Icon(Icons.access_time,
-                              color: Colors.white, size: 35),
+                              color: Colors.white, size: 30),
                           onPressed: () async {
                             setCommuteTime();
                           },
@@ -304,7 +304,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         Flexible(
                           flex: 1,
                           child: IconButton(
-                            icon: const Icon(Icons.fork_right, size: 35),
+                            icon: const Icon(Icons.fork_right, size: 30),
                             color: Colors.white,
                             onPressed: () async {
                               sendRouteRequest();
