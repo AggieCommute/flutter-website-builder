@@ -4,6 +4,16 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 // import 'package:vector_map_tiles/vector_map_tiles.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+class RouteResponse {
+  const RouteResponse();
+
+  factory RouteResponse.fromJson(Map<String, dynamic> json) {
+    return RouteResponse();
+  }
+}
 
 void main() {
   runApp(const AggieCommuteApp());
@@ -78,6 +88,61 @@ class _MyHomePageState extends State<MyHomePage> {
   TimeOfDay commuteTime = TimeOfDay.now();
   DateTime commuteDate = DateTime.now();
 
+  String createHttpRequestBody() {
+    return jsonEncode(<String, String>{
+      'source': commuteSource,
+      'destination': commuteDestination,
+      'time': commuteTime.format(context),
+      'date': commuteDate.toIso8601String(),
+    });
+  }
+
+  void displayRouteRequest() {
+    String requestBody = createHttpRequestBody();
+    requestBody = requestBody
+        .replaceAll(RegExp(r'{'), '{\n')
+        .replaceAll(RegExp(r','), ',\n')
+        .replaceAll(RegExp(r'}'), '\n}');
+
+    debugPrint(requestBody);
+
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('HTTP Request Body'),
+        content: Text(requestBody),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'OK'),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<RouteResponse> sendRouteRequest() async {
+    final requestBody = createHttpRequestBody();
+
+    final response = await http.post(
+      Uri.parse('https://jsonplaceholder.typicode.com/albums'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: requestBody,
+    );
+
+    if (response.statusCode == 201) {
+      // If the server did return a 201 CREATED response,
+      // then parse the JSON.
+      return RouteResponse.fromJson(jsonDecode(response.body));
+    } else {
+      // If the server did not return a 201 CREATED response,
+      // then throw an exception.
+      throw Exception('Failed to send request.');
+    }
+  }
+
   void setCommuteSource(String userSource) {
     setState(() {
       commuteSource = userSource;
@@ -141,6 +206,11 @@ class _MyHomePageState extends State<MyHomePage> {
                           icon: const Icon(Icons.menu,
                               color: Colors.white, size: 35),
                           onPressed: () => {},
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.bug_report_sharp,
+                              color: Colors.white, size: 35),
+                          onPressed: displayRouteRequest,
                         ),
                         const Spacer(),
                         Row(children: [
@@ -236,7 +306,9 @@ class _MyHomePageState extends State<MyHomePage> {
                           child: IconButton(
                             icon: const Icon(Icons.fork_right, size: 35),
                             color: Colors.white,
-                            onPressed: () => {},
+                            onPressed: () async {
+                              sendRouteRequest();
+                            },
                           ),
                         ),
                       ])
