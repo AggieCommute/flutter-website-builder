@@ -129,18 +129,43 @@ class _MyHomePageState extends State<MyHomePage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(widget.title,
-                            style: GoogleFonts.oswald(
-                              textStyle: const TextStyle(color: Colors.white),
-                              fontSize: 30,
-                              fontWeight: FontWeight.w700,
-                              fontStyle: FontStyle.italic,
-                            )),
                         IconButton(
-                          icon: const Icon(Icons.directions_bus_filled,
+                          icon: const Icon(Icons.menu,
+                              color: Colors.white, size: 35),
+                          onPressed: () => {},
+                        ),
+                        const Spacer(),
+                        Row(children: [
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(widget.title,
+                                    style: GoogleFonts.oswald(
+                                      textStyle:
+                                          const TextStyle(color: Colors.white),
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.w700,
+                                      fontStyle: FontStyle.italic,
+                                    )),
+                                IconButton(
+                                  icon: const Icon(Icons.directions_bus_filled,
+                                      color: Colors.white, size: 35),
+                                  onPressed: () => {},
+                                ),
+                              ])
+                        ]),
+                        const Spacer(),
+                        IconButton(
+                          icon: const Icon(Icons.calendar_month_outlined,
+                              color: Colors.white, size: 35),
+                          onPressed: () => {},
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.access_time,
                               color: Colors.white, size: 35),
                           onPressed: () => {},
                         ),
@@ -150,7 +175,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Flexible(
-                            flex: 2,
+                            flex: 3,
                             child: TextFormField(
                               cursorColor: Colors.white,
                               decoration: InputDecoration(
@@ -173,7 +198,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               },
                             )),
                         Flexible(
-                            flex: 2,
+                            flex: 3,
                             child: TextFormField(
                               cursorColor: Colors.white,
                               decoration: InputDecoration(
@@ -197,11 +222,10 @@ class _MyHomePageState extends State<MyHomePage> {
                             )),
                         Flexible(
                           flex: 1,
-                          child: OutlinedButton(
-                            onPressed: () {
-                              debugPrint('Received click');
-                            },
-                            child: const Text('Click Me'),
+                          child: IconButton(
+                            icon: const Icon(Icons.fork_right, size: 35),
+                            color: Colors.white,
+                            onPressed: () => {},
                           ),
                         ),
                       ])
