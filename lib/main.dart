@@ -190,7 +190,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-          toolbarHeight: 140.00, //set your height
+          toolbarHeight: 120.00, //set your height
           flexibleSpace: SafeArea(
               child: Container(
             color: Theme.of(context).primaryColor, // set your color
@@ -204,12 +204,12 @@ class _MyHomePageState extends State<MyHomePage> {
                       children: [
                         IconButton(
                           icon: const Icon(Icons.menu,
-                              color: Colors.white, size: 30),
+                              color: Colors.white, size: 25),
                           onPressed: () => {},
                         ),
                         IconButton(
                           icon: const Icon(Icons.bug_report_sharp,
-                              color: Colors.white, size: 30),
+                              color: Colors.white, size: 25),
                           onPressed: displayRouteRequest,
                         ),
                         const Spacer(),
@@ -222,13 +222,13 @@ class _MyHomePageState extends State<MyHomePage> {
                                     style: GoogleFonts.oswald(
                                       textStyle:
                                           const TextStyle(color: Colors.white),
-                                      fontSize: 30,
+                                      fontSize: 25,
                                       fontWeight: FontWeight.w700,
                                       fontStyle: FontStyle.italic,
                                     )),
                                 const IconButton(
                                   icon: Icon(Icons.directions_bus_filled,
-                                      color: Colors.white, size: 30),
+                                      color: Colors.white, size: 25),
                                   onPressed: null,
                                 ),
                               ])
@@ -236,14 +236,14 @@ class _MyHomePageState extends State<MyHomePage> {
                         const Spacer(),
                         IconButton(
                           icon: const Icon(Icons.calendar_month_outlined,
-                              color: Colors.white, size: 30),
+                              color: Colors.white, size: 25),
                           onPressed: () async {
                             setCommuteDate();
                           },
                         ),
                         IconButton(
                           icon: const Icon(Icons.access_time,
-                              color: Colors.white, size: 30),
+                              color: Colors.white, size: 25),
                           onPressed: () async {
                             setCommuteTime();
                           },
@@ -304,7 +304,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         Flexible(
                           flex: 1,
                           child: IconButton(
-                            icon: const Icon(Icons.fork_right, size: 30),
+                            icon: const Icon(Icons.fork_right, size: 25),
                             color: Colors.white,
                             onPressed: () async {
                               sendRouteRequest();
