@@ -42,12 +42,20 @@ class AggieCommuteApp extends StatelessWidget {
           brightness: Brightness.dark,
           primarySwatch: createMaterialColor(const Color(0xff500000)),
           primaryColor: const Color(0xff500000),
-          fontFamily: GoogleFonts.oswald().fontFamily),
+          fontFamily: GoogleFonts.oswald().fontFamily,
+          textSelectionTheme: const TextSelectionThemeData(
+            selectionColor: Colors.grey,
+            cursorColor: Colors.white,
+          )),
       darkTheme: ThemeData(
           brightness: Brightness.dark,
           primarySwatch: createMaterialColor(const Color(0xff500000)),
           primaryColor: const Color(0xff500000),
-          fontFamily: GoogleFonts.oswald().fontFamily),
+          fontFamily: GoogleFonts.oswald().fontFamily,
+          textSelectionTheme: const TextSelectionThemeData(
+            selectionColor: Colors.grey,
+            cursorColor: Colors.white,
+          )),
       home: const MyHomePage(title: '=Aggie Commute'),
       debugShowCheckedModeBanner: false,
     );
@@ -77,7 +85,6 @@ class _MyHomePageState extends State<MyHomePage> {
   String commuteDestination = "";
   TimeOfDay commuteTime = TimeOfDay.now();
   DateTime commuteDate = DateTime.now();
-  int _counter = 0;
 
   void setCommuteSource(String userSource) {
     setState(() {
@@ -113,12 +120,12 @@ class _MyHomePageState extends State<MyHomePage> {
     // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-          toolbarHeight: 120.10, //set your height
+          toolbarHeight: 140.00, //set your height
           flexibleSpace: SafeArea(
               child: Container(
             color: Theme.of(context).primaryColor, // set your color
             child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Row(
@@ -139,17 +146,21 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ]),
                   Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Flexible(
                             flex: 2,
                             child: TextFormField(
-                              decoration: const InputDecoration(
-                                icon: Icon(Icons.my_location,
+                              cursorColor: Colors.white,
+                              decoration: InputDecoration(
+                                icon: const Icon(Icons.my_location,
                                     color: Colors.white),
-                                hintText: 'Where do you want to start from?',
+                                hintText: '   Where do you want to start from?',
                                 labelText: 'Source',
+                                filled: true,
+                                fillColor:
+                                    Theme.of(context).secondaryHeaderColor,
                               ),
                               onSaved: (String? value) {
                                 // This optional block of code can be used to run
@@ -164,11 +175,15 @@ class _MyHomePageState extends State<MyHomePage> {
                         Flexible(
                             flex: 2,
                             child: TextFormField(
-                              decoration: const InputDecoration(
-                                icon: Icon(Icons.map_outlined,
+                              cursorColor: Colors.white,
+                              decoration: InputDecoration(
+                                icon: const Icon(Icons.map_outlined,
                                     color: Colors.white),
-                                hintText: 'Where do you want to go?',
+                                hintText: '   Where do you want to go?',
                                 labelText: 'Destination',
+                                filled: true,
+                                fillColor:
+                                    Theme.of(context).secondaryHeaderColor,
                               ),
                               onSaved: (String? value) {
                                 // This optional block of code can be used to run
@@ -196,27 +211,24 @@ class _MyHomePageState extends State<MyHomePage> {
           // Center is a layout widget. It takes a single child and positions it
           // in the middle of the parent.
           child: Stack(children: [
-        Padding(
-          padding: const EdgeInsets.all(8),
-          child: FlutterMap(
-            options: MapOptions(
-              center: LatLng(30.61221, -96.34149),
-              zoom: 15,
-            ),
-            nonRotatedChildren: [
-              AttributionWidget.defaultWidget(
-                source: 'OpenStreetMap contributors',
-                onSourceTapped: null,
-              ),
-            ],
-            children: [
-              TileLayer(
-                urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                userAgentPackageName: 'com.example.app',
-              ),
-            ],
+        FlutterMap(
+          options: MapOptions(
+            center: LatLng(30.61221, -96.34149),
+            zoom: 15,
           ),
-        )
+          nonRotatedChildren: [
+            AttributionWidget.defaultWidget(
+              source: 'OpenStreetMap contributors',
+              onSourceTapped: null,
+            ),
+          ],
+          children: [
+            TileLayer(
+              urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+              userAgentPackageName: 'com.example.app',
+            ),
+          ],
+        ),
       ])),
     );
   }
