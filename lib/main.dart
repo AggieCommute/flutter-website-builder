@@ -39,23 +39,15 @@ class AggieCommuteApp extends StatelessWidget {
     return MaterialApp(
       title: 'Aggie Commute',
       theme: ThemeData(
-          brightness: Brightness.dark,
-          primarySwatch: createMaterialColor(const Color(0xff500000)),
-          primaryColor: const Color(0xff500000),
-          fontFamily: GoogleFonts.oswald().fontFamily,
-          textSelectionTheme: const TextSelectionThemeData(
-            selectionColor: Colors.grey,
-            cursorColor: Colors.white,
-          )),
+        brightness: Brightness.light,
+        primarySwatch: createMaterialColor(const Color(0xff500000)),
+        fontFamily: GoogleFonts.oswald().fontFamily,
+      ),
       darkTheme: ThemeData(
-          brightness: Brightness.dark,
-          primarySwatch: createMaterialColor(const Color(0xff500000)),
-          primaryColor: const Color(0xff500000),
-          fontFamily: GoogleFonts.oswald().fontFamily,
-          textSelectionTheme: const TextSelectionThemeData(
-            selectionColor: Colors.grey,
-            cursorColor: Colors.white,
-          )),
+        brightness: Brightness.dark,
+        primarySwatch: createMaterialColor(const Color(0xff500000)),
+        fontFamily: GoogleFonts.oswald().fontFamily,
+      ),
       home: const MyHomePage(title: '=Aggie Commute'),
       debugShowCheckedModeBanner: false,
     );
@@ -98,16 +90,29 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void setCommuteTime(TimeOfDay userTime) {
-    setState(() {
-      commuteTime = userTime;
-    });
+  void setCommuteTime() async {
+    final userTime = await showTimePicker(
+      context: context,
+      initialTime: commuteTime,
+    );
+    if (userTime != null && userTime != commuteTime) {
+      setState(() {
+        commuteTime = userTime;
+      });
+    }
   }
 
-  void setCommuteDate(DateTime userDate) {
-    setState(() {
-      commuteDate = userDate;
-    });
+  void setCommuteDate() async {
+    final userDate = await showDatePicker(
+        context: context,
+        initialDate: commuteDate,
+        firstDate: DateTime.now(),
+        lastDate: DateTime(2100));
+    if (userDate != null && userDate != commuteDate) {
+      setState(() {
+        commuteDate = userDate;
+      });
+    }
   }
 
   @override
@@ -151,10 +156,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                       fontWeight: FontWeight.w700,
                                       fontStyle: FontStyle.italic,
                                     )),
-                                IconButton(
-                                  icon: const Icon(Icons.directions_bus_filled,
+                                const IconButton(
+                                  icon: Icon(Icons.directions_bus_filled,
                                       color: Colors.white, size: 35),
-                                  onPressed: () => {},
+                                  onPressed: null,
                                 ),
                               ])
                         ]),
@@ -162,12 +167,16 @@ class _MyHomePageState extends State<MyHomePage> {
                         IconButton(
                           icon: const Icon(Icons.calendar_month_outlined,
                               color: Colors.white, size: 35),
-                          onPressed: () => {},
+                          onPressed: () async {
+                            setCommuteDate();
+                          },
                         ),
                         IconButton(
                           icon: const Icon(Icons.access_time,
                               color: Colors.white, size: 35),
-                          onPressed: () => {},
+                          onPressed: () async {
+                            setCommuteTime();
+                          },
                         ),
                       ]),
                   Row(
