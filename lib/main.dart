@@ -46,7 +46,7 @@ class AggieCommuteApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: createMaterialColor(Color(0xff500000)),
       ),
-      home: const MyHomePage(title: 'Aggie Commute'),
+      home: const MyHomePage(title: '=Aggie Commute'),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -95,12 +95,18 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.directions_bus_filled, color: Colors.white),
+          icon: Icon(Icons.directions_bus_filled, color: Colors.white, size: 35),          
           onPressed: () => {},
         ),
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title, style: GoogleFonts.oswald()),
+        title: Text(widget.title, style: GoogleFonts.oswald(
+            textStyle: TextStyle(color: Colors.white),
+            fontSize: 30,
+            fontWeight: FontWeight.w700,
+            fontStyle: FontStyle.italic,
+          )
+        ),
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
